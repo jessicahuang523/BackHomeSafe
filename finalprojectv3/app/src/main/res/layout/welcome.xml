@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".WelcomeActivity">
+
+    <LinearLayout
+        android:id="@+id/login_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/welcome_icon"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/cn_icon_dec"
+            android:src="@drawable/ic_logop"
+            tools:layout_conversion_absoluteHeight="128dp"
+            tools:layout_conversion_absoluteWidth="379dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="132dp" />
+
+        <Button
+            android:id="@+id/welcome_button_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="300dp"
+            android:text="@string/cn_welcome_button_login"
+            android:translationY="120dp"
+            android:onClick="welcome_button"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="300dp"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="380dp" />
+
+        <Button
+            android:id="@+id/welcome_button_user_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="300dp"
+            android:text="@string/cn_welcome_button_register"
+            android:translationY="140dp"
+            android:onClick="welcome_button"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="300dp"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="448dp" />
+
+        <Button
+            android:id="@+id/welcome_button_shop_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="300dp"
+            android:text="@string/cn_welcome_button_shop_register"
+            android:translationY="160dp"
+            android:onClick="welcome_button"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="300dp"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="516dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
