@@ -10,12 +10,10 @@ class DataBaseConfig
     public function __construct()
     {
 
-        $this->servername = 'wen0750.club';
-        $this->username = 'web-api';
-        $this->password = 'Ih8XnZH%j9LIv^BO';
-        $this->databasename = 'y3_project';
+        $this->servername = 'us-cdbr-east-05.cleardb.net';
+        $this->username = 'b6b7e26fb07b57';
+        $this->password = 'cadfa54a';
+        $this->databasename = 'heroku_7c19d9f37317a8a';
 
     }
 }
-
-?>
