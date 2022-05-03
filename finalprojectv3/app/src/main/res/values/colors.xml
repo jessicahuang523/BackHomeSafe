@@ -11,4 +11,7 @@
     <color name="health_save">#558A2F</color>
     <color name="health_wg">#FFEB3B</color>
     <color name="health_dg">#F44336</color>
+    <color name="dark_blue">#11335C</color>
+    <color name="background_yellow">#FFF2CC</color>
+    <color name="text_blue">#92A9FC</color>
 </resources>
