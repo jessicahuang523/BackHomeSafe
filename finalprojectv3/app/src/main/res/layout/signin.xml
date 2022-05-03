@@ -23,7 +23,7 @@
             android:layout_height="160dp"
             android:layout_gravity="center"
             android:contentDescription="@string/cn_icon_dec"
-            android:src="@drawable/ic_logop" />
+            android:src="@drawable/bhs_logo" />
 
         <TextView
             android:id="@+id/user_login_title"

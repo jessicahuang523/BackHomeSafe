@@ -27,7 +27,7 @@
             android:layout_height="160dp"
             android:layout_gravity="center"
             android:contentDescription="@string/cn_icon_dec"
-            android:src="@drawable/ic_logop"
+            android:src="@drawable/bhs_logo"
             tools:layout_conversion_absoluteHeight="128dp"
             tools:layout_conversion_absoluteWidth="379dp"
             tools:layout_editor_absoluteX="16dp"

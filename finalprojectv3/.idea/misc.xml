@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_logop.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_announce.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_announce_row.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_history.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/fragment_history_row_iteam.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/fragment_information.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/scanner.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/shop_register.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/signin.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/signup.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/welcome.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.221875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23802083333333332" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
