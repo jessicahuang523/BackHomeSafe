@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="club.wen0750.finalproject_v3">
+    package="club.owo.finalproject_v3">
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Finalprojectv3">
-        <activity android:name=".ScannerActivity"></activity>
+        <activity android:name="club.owo.finalproject_v3.ScannerActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="club.owo.finalproject_v3.MainActivity"
             android:label="@string/app_name" />
-        <activity android:name=".ShopRegisterActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".WelcomeActivity">
+        <activity android:name="club.owo.finalproject_v3.ShopRegisterActivity" />
+        <activity android:name="club.owo.finalproject_v3.SignUpActivity" />
+        <activity android:name="club.owo.finalproject_v3.SignInActivity" />
+        <activity android:name="club.owo.finalproject_v3.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

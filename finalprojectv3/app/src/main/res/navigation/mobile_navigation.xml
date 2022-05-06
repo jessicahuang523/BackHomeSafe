@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="club.wen0750.finalproject_v3.ui.home.HomeFragment"
+        android:name="club.owo.finalproject_v3.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="club.wen0750.finalproject_v3.ui.history.HistoryFragment"
+        android:name="club.owo.finalproject_v3.ui.history.HistoryFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/navigation_announce"
-        android:name="club.wen0750.finalproject_v3.ui.announcement.AnnounceFragment"
+        android:name="club.owo.finalproject_v3.ui.announcement.AnnounceFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_announce" />
     <fragment
         android:id="@+id/navigation_information"
-        android:name="club.wen0750.finalproject_v3.ui.information.InformationFragment"
+        android:name="club.owo.finalproject_v3.ui.information.InformationFragment"
         android:label="@string/title_scanner"
         tools:layout="@layout/fragment_information" />
 </navigation>
