@@ -63,7 +63,7 @@ public class SignInActivity extends AppCompatActivity {
                             data[0] = email;
                             data[1] = password;
 
-                            PutData putData = new PutData("https://wen0750.club/y3_project/login.php", "POST", field, data);
+                            PutData putData = new PutData("https://backhomesafe.herokuapp.com/login.php", "POST", field, data);
                             if (putData.startPut()) {
                                 if (putData.onComplete()) {
                                     user_login_progressbar.setVisibility(View.GONE);

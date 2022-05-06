@@ -56,7 +56,7 @@ public class ShopRegisterActivity extends AppCompatActivity {
                             data[1] = shop_rid;
                             data[2] = shop_telephone;
 
-                            PutData shop_reg_input = new PutData("https://wen0750.club/y3_project/shopregister.php", "POST", field, data);
+                            PutData shop_reg_input = new PutData("https://backhomesafe.herokuapp.com/shopregister.php", "POST", field, data);
                             if (shop_reg_input.startPut()) {
 
                                 if (shop_reg_input.onComplete()) {

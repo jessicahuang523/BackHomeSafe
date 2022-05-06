@@ -78,7 +78,7 @@ public class ScannerActivity extends AppCompatActivity {
                         data[2] = "qr_processing";
                         data[3] = sresult;
 
-                        PutData putData = new PutData("https://wen0750.club/y3_project/acsm.php", "POST", field, data);
+                        PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
                         if (putData.startPut()) {
                             if (putData.onComplete()) {
                                 String dresult = putData.getResult();
@@ -156,7 +156,7 @@ public class ScannerActivity extends AppCompatActivity {
                         data[3] = time;
                         data[4] = "user_check_out";
 
-                        PutData putData = new PutData("https://wen0750.club/y3_project/acsm.php", "POST", field, data);
+                        PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
                         if (putData.startPut()) {
                             if (putData.onComplete()) {
                                 String result = putData.getResult();

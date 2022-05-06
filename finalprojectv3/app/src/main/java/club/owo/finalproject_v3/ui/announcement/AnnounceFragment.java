@@ -88,7 +88,7 @@ public class AnnounceFragment extends Fragment {
                 data[1] = ukey;
                 data[2] = "get_announce";
 
-                PutData putData = new PutData("https://wen0750.club/y3_project/acsm.php", "POST", field, data);
+                PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
                 if (putData.startPut()) {
                     if (putData.onComplete()) {
                         String dresult = putData.getResult();

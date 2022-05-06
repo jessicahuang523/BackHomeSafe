@@ -78,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
                     data[4] = address;
                     data[5] = idcid;
 
-                    PutData putData = new PutData("https://wen0750.club/y3_project/signup.php", "POST", field, data);
+                    PutData putData = new PutData("https://backhomesafe.herokuapp.com/signup.php", "POST", field, data);
                     if (putData.startPut()) {
                         if (putData.onComplete()) {
                             user_reg_progressbar.setVisibility(View.GONE);
