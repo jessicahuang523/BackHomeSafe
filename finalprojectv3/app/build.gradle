@@ -5,9 +5,8 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-
     defaultConfig {
-        applicationId "club.wen0750.finalproject_v3"
+        applicationId "club.owo.finalproject_v3"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1

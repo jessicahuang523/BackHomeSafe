@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -77,7 +78,8 @@ public class ScannerActivity extends AppCompatActivity {
                         data[1] = ukey;
                         data[2] = "qr_processing";
                         data[3] = sresult;
-
+                        for(int i=0;i<4;i++){Log.d("field",field[i]);}
+                        for(int i=0;i<4;i++){Log.d("dataowo",data[i]);}
                         PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
                         if (putData.startPut()) {
                             if (putData.onComplete()) {
@@ -155,12 +157,13 @@ public class ScannerActivity extends AppCompatActivity {
                         data[2] = shop_id;
                         data[3] = time;
                         data[4] = "user_check_out";
-
+                        for(int i=0;i<5;i++){Log.d("fieldCheckOut",field[i]);}
+                        for(int i=0;i<5;i++){Log.d("dataCheckOut",data[i]);}
                         PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
                         if (putData.startPut()) {
                             if (putData.onComplete()) {
                                 String result = putData.getResult();
-
+                                Log.d("leaveResult",result);
                                 if(result.equals("Action Update Success")){
                                     Intent page = new Intent(getApplicationContext(),MainActivity.class);
                                     startActivity(page);

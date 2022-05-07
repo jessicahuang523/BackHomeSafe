@@ -57,7 +57,7 @@ class DataBase
     {
         $email = $this->prepareData($email);
 
-        $this->sql = "SELECT uuid,ac_key FROM user_account WHERE email = '". $email ."'";
+        $this->sql = "SELECT uuid,ac_key FROM user_account WHERE email = '" . $email . "'";
         $result = mysqli_query($this->connect, $this->sql);
 
         if (mysqli_num_rows($result) > 0) {
@@ -80,7 +80,7 @@ class DataBase
             array_push($response["login_status"], $status);
 
             return json_encode($response);
-        }else return 'error';
+        } else return 'error';
     }
 
     //user : write the user data into sql
@@ -110,7 +110,7 @@ class DataBase
         $password = password_hash($password, PASSWORD_DEFAULT);
         $ac_key = password_hash($idcid, PASSWORD_DEFAULT);
 
-        $this->sql = "INSERT INTO " . $table . " (uuid,email,password,ac_key) VALUES ( (SELECT MAX(id) AS uid FROM user_data WHERE email = '". $email ."'),'" . $email . "','" . $password . "','" . $ac_key . "')";
+        $this->sql = "INSERT INTO " . $table . " (uuid,email,password,ac_key) VALUES ( (SELECT MAX(id) AS uid FROM user_data WHERE email = '" . $email . "'),'" . $email . "','" . $password . "','" . $ac_key . "')";
 
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
@@ -124,17 +124,17 @@ class DataBase
         $idcid = $this->prepareData($idcid);
         $table = $this->prepareData($table);
 
-        $this->sql ="SELECT MAX(id) AS UUID,email FROM ".$table." WHERE email = '". $email ."' OR idcid = '". $idcid ."'";
+        $this->sql = "SELECT MAX(id) AS UUID,email FROM " . $table . " WHERE email = '" . $email . "' OR idcid = '" . $idcid . "'";
 
         $result = mysqli_query($this->connect, $this->sql) or die("sql: error");
 
-        if(mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_assoc($result)){
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 $UID = $row['UUID'];
             }
         }
 
-        if( empty($UID) ) {
+        if (empty($UID)) {
             return true;
         } else {
             return false;
@@ -149,7 +149,7 @@ class DataBase
         $shop_telephone = $this->prepareData($shop_telephone);
         $table = $this->prepareData($table);
 
-        $this->sql ="INSERT INTO shop_data (company_name,register_id,telephone) VALUES ('". $shop_name ."','". $shop_register_id ."','". $shop_telephone ."')";
+        $this->sql = "INSERT INTO shop_data (company_name,register_id,telephone) VALUES ('" . $shop_name . "','" . $shop_register_id . "','" . $shop_telephone . "')";
 
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
@@ -162,16 +162,16 @@ class DataBase
         $register_id = $this->prepareData($register_id);
         $table = $this->prepareData($table);
 
-        $this->sql ="SELECT register_id FROM shop_data WHERE register_id = '". $register_id ."'";
+        $this->sql = "SELECT register_id FROM shop_data WHERE register_id = '" . $register_id . "'";
         $result = mysqli_query($this->connect, $this->sql) or die("sql: error");
 
-        if(mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_assoc($result)){
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 $rid = $row['register_id'];
             }
         }
 
-        if( empty($rid) ) {
+        if (empty($rid)) {
             return true;
         } else {
             return false;
@@ -183,26 +183,27 @@ class DataBase
     {
         $register_id = $this->prepareData($register_id);
 
-        $this->sql = "SELECT id FROM shop_data WHERE register_id = '" .$register_id. "'";
+        $this->sql = "SELECT id FROM shop_data WHERE register_id = '" . $register_id . "'";
         $result = mysqli_query($this->connect, $this->sql);
 
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             return $row['id'];
-        }else return $this->prepareData($register_id);
+        } else return $this->prepareData($register_id);
     }
 
     //get : get qr_code_meta_id with shop_reg_id
-    function get_qr_mid_wrid($reg_id){
+    function get_qr_mid_wrid($reg_id)
+    {
         $reg_id = $this->prepareData($reg_id);
 
-        $this->sql = "SELECT qr_code FROM shop_qr WHERE shop_id = (SELECT id FROM shop_data WHERE register_id = ".$reg_id.")";
+        $this->sql = "SELECT qr_code FROM shop_qr WHERE shop_id = (SELECT id FROM shop_data WHERE register_id = " . $reg_id . ")";
         $result = mysqli_query($this->connect, $this->sql);
 
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             return $row['qr_code'];
-        }else return false;
+        } else return false;
     }
 
     //qr : check shop qr code true or false and return shop id and name
@@ -210,15 +211,17 @@ class DataBase
     {
         $qr_id = $this->prepareData($qr_id);
 
-        $this->sql = "SELECT sdata.id,sdata.company_name FROM shop_qr LEFT JOIN shop_data sdata ON sdata.id = shop_id WHERE qr_code = '". $qr_id ."'";
-
+        $this->sql = "SELECT sdata.id,sdata.company_name FROM shop_qr LEFT JOIN shop_data sdata ON sdata.id = shop_id WHERE qr_code = '" . $qr_id . "'";
+        mysqli_query($this->connect, "SET CHARACTER SET 'utf8'"); //used to solve getting quesion mark for chinese
+        mysqli_query($this->connect, "SET SESSION collation_connection ='utf8_unicode_ci'"); //used to solve getting quesion mark for chinese
         $result = mysqli_query($this->connect, $this->sql);
 
-        if(mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_assoc($result)){
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
                 return array($row['id'], $row['company_name']);
             }
-        } return false;
+        }
+        return false;
     }
 
     //qr : insert shop qr code meta id to sql
@@ -227,7 +230,7 @@ class DataBase
         $shop_id = $this->prepareData($shop_id);
         $qr_metacode = new qr_generateRandomString;
 
-        $this->sql = "INSERT INTO shop_qr (shop_id, qr_code) VALUES ('". $shop_id ."', '". $qr_metacode ."')";
+        $this->sql = "INSERT INTO shop_qr (shop_id, qr_code) VALUES ('" . $shop_id . "', '" . $qr_metacode . "')";
         if (mysqli_query($this->connect, $this->sql)) {
 
             return true;
@@ -237,7 +240,7 @@ class DataBase
     //qr : gen qr code meta id
     function qr_generateRandomString($length = 26)
     {
-        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
     }
 
     //action : check user action permission
@@ -246,15 +249,16 @@ class DataBase
         $uuid = $this->prepareData($uuid);
         $passkey = $this->prepareData($pass_key);
 
-        $this->sql = "SELECT uuid FROM user_account WHERE ac_key = '". $passkey ."'";
+        $this->sql = "SELECT uuid FROM user_account WHERE ac_key = '" . $passkey . "'";
         $result = mysqli_query($this->connect, $this->sql);
 
-        if(mysqli_num_rows($result) > 0){
+        if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             if ($row['uuid'] == $uuid) {
                 return true;
             }
-        } return false;
+        }
+        return false;
     }
 
     //action : user check in
@@ -263,7 +267,7 @@ class DataBase
         $uuid = $this->prepareData($uuid);
         $shop_id = $this->prepareData($shop_id);
 
-        $this->sql = "INSERT INTO user_check_time (uuid,shop_id) VALUES ('". $uuid ."','". $shop_id ."')";
+        $this->sql = "INSERT INTO user_check_time (uuid,shop_id) VALUES ('" . $uuid . "','" . $shop_id . "')";
 
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
@@ -280,8 +284,8 @@ class DataBase
         $time = strtotime($time);
         $time = date("Y-m-d H:i:s", $time);
 
-        $this->sql = "UPDATE user_check_time SET check_out = '". $time ."' WHERE id = (SELECT MAX(id) FROM user_check_time WHERE uuid = ". $uuid ." AND shop_id = ". $shop_id ." AND check_out IS NULL)";
-
+        // $this->sql = "UPDATE user_check_time SET check_out = '" . $time . "' WHERE id = (SELECT MAX(id) FROM user_check_time WHERE uuid = " . $uuid . " AND shop_id = " . $shop_id . " AND check_out IS NULL)";
+        $this->sql = "UPDATE user_check_time SET check_out = '" . $time . "' WHERE id = (SELECT MAX(id) FROM (SELECT * FROM user_check_time) AS T WHERE uuid = " . $uuid . " AND shop_id = " . $shop_id . " AND check_out IS NULL)";
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
         } else return false;
@@ -291,9 +295,19 @@ class DataBase
     function uat_gethistory($uuid)
     {
         $uuid = $this->prepareData($uuid);
-
-        $this->sql = "SELECT data.id,shop.company_name,data.check_in,data.check_out,data.health FROM user_check_time as data LEFT JOIN shop_data AS shop ON shop.id = shop_id WHERE data.uuid = ". $uuid. " ORDER BY data.id DESC";
-
+        mysqli_query($this->connect, "SET CHARACTER SET 'utf8'"); //used to solve getting quesion mark for chinese
+        mysqli_query($this->connect, "SET SESSION collation_connection ='utf8_unicode_ci'"); //used to solve getting quesion mark for chinese
+        $this->sql = "SELECT 
+        data.id,
+        shop.company_name,
+        data.check_in,
+        data.check_out,
+        data.health,
+        bb.contain
+        FROM user_check_time as DATA 
+        LEFT JOIN shop_data AS shop ON shop.id = DATA.shop_id
+        LEFT JOIN (SELECT shop_id,COUNT(id) contain FROM user_check_time WHERE check_out IS NULL GROUP BY shop_id) bb ON bb.shop_id = DATA.shop_id
+        WHERE data.uuid = 64 ORDER BY data.id DESC;";
         $result = mysqli_query($this->connect, $this->sql);
 
         if (mysqli_num_rows($result) > 0) {
@@ -301,7 +315,7 @@ class DataBase
 
             $response["history"] = array();
 
-            while ($row = mysqli_fetch_array($result)) {
+            while ($row = mysqli_fetch_array($result)) { //第一個loop的$row裝的是第一行的東西，第二個loop的row裝的是第二行的東西，如此類推
                 $apps = array();
 
                 $apps["id"] = $row["id"];
@@ -309,42 +323,49 @@ class DataBase
                 $apps["check_in"] = $row["check_in"];
                 $apps["check_out"] = $row["check_out"];
                 $apps["health"] = $row["health"];
-
+                $apps["contain"] = $row["contain"];
                 // push single product into final response array
-                array_push($response["history"], $apps);
+                array_push($response["history"], $apps); //拿完一行了，存進response，apps清零，搞下一行
             }
+            // $this->sql = "SELECT shop_id,COUNT(id) FROM user_check_time WHERE check_out IS NULL GROUP BY shop_id"; //拿到還沒checkout的數目
+            // $result2 = mysqli_query($this->connect, $this->sql);
+            // while ($row = mysqli_fetch_array($result2)) {
+            //     foreach ($response["history"] as $app) {
+            //         if ($app["shop_id"] == $row["shop_id"]) {
+            //             $app["headCount"] = $row["COUNT(id)"];
+            //         }
+            //     }
+            // }
             // success
             // echoing JSON response
             return json_encode($response);
-        }else return false;
+        } else return false;
     }
 
     //action : List all the Announcement of user
-    function list_announce($uuid){
-      $this->sql = "SELECT ps.id, GROUP_CONCAT(CASE WHEN dp.meta_key = '_department_name' THEN dp.meta_value ELSE null END) AS depart_name, ic.path AS icon, ps.post_time, img.path as img,ps.post_title FROM announce_post AS ps LEFT JOIN panel_department AS dp ON dp.forward_id = ps.post_department_id LEFT JOIN announce_image_path AS img ON img.img_id = post_img LEFT JOIN announce_icon_path AS ic ON ic.department_id = ps.post_department_id WHERE uid = '". $uuid ."' GROUP BY ps.id";
-      $result = mysqli_query($this->connect, $this->sql);
+    function list_announce($uuid)
+    {
+        $this->sql = "SELECT ps.id, GROUP_CONCAT(CASE WHEN dp.meta_key = '_department_name' THEN dp.meta_value ELSE null END) AS depart_name, ic.path AS icon, ps.post_time, img.path as img,ps.post_title FROM announce_post AS ps LEFT JOIN panel_department AS dp ON dp.forward_id = ps.post_department_id LEFT JOIN announce_image_path AS img ON img.img_id = post_img LEFT JOIN announce_icon_path AS ic ON ic.department_id = ps.post_department_id WHERE uid = '" . $uuid . "' GROUP BY ps.id";
+        $result = mysqli_query($this->connect, $this->sql);
 
-      if (mysqli_num_rows($result) > 0) {
-        $response["announce"] = array();
+        if (mysqli_num_rows($result) > 0) {
+            $response["announce"] = array();
 
-        while ($row = mysqli_fetch_array($result)) {
-          $apps = array();
+            while ($row = mysqli_fetch_array($result)) {
+                $apps = array();
 
-          $apps["post_id"] = $row["id"];
-          $apps["depart_name"] = "         ";
-          //$row["depart_name"]
-          $apps["depart_icon"] = "https://wen0750.club/y3_project/html/announce_icon/1200px-Centre_for_Health_Protection.svg.png";
-          //.$row["icon"]
-          $apps["post_time"] = $row["post_time"];
-          $apps["post_image"] = $row["img"];
-          $apps["post_title"] = $row["post_title"];
+                $apps["post_id"] = $row["id"];
+                $apps["depart_name"] = "         ";
+                //$row["depart_name"]
+                $apps["depart_icon"] = "https://wen0750.club/y3_project/html/announce_icon/1200px-Centre_for_Health_Protection.svg.png";
+                //.$row["icon"]
+                $apps["post_time"] = $row["post_time"];
+                $apps["post_image"] = $row["img"];
+                $apps["post_title"] = $row["post_title"];
 
-          array_push($response["announce"], $apps);
-        }
-        return json_encode($response);
-      }else return false;
+                array_push($response["announce"], $apps);
+            }
+            return json_encode($response);
+        } else return false;
     }
-
-
 }
-?>
