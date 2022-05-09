@@ -23,7 +23,7 @@
         android:layout_below="@id/scanner_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:text="please scan the qr code to check in"
+        android:text="Please scan the QR code to check in."
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />

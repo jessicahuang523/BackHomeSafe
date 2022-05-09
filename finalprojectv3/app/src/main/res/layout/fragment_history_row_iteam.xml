@@ -10,7 +10,7 @@ android:orientation="vertical">
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E1E1E1"
+        android:background="@color/background_yellow"
         android:minWidth="380dp"
         android:orientation="horizontal">
 

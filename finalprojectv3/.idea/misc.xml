@@ -10,8 +10,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_announce.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_announce_row.xml" value="0.17300724637681159" />
-        <entry key="app/src/main/res/layout/fragment_history.xml" value="0.16802536231884058" />
-        <entry key="app/src/main/res/layout/fragment_history_row_iteam.xml" value="0.16802536231884058" />
+        <entry key="app/src/main/res/layout/fragment_history.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_history_row_iteam.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_information.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/scanner.xml" value="0.17300724637681159" />
