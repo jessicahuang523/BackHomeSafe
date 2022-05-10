@@ -23,14 +23,14 @@ public class InformationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_information, container, false);
 
         ImageButton btn_open_scnner = (ImageButton)root.findViewById(R.id.info_btn_1);
-        ImageButton button_a = (ImageButton)root.findViewById(R.id.info_btn_2);
-        ImageButton button_b = (ImageButton)root.findViewById(R.id.info_btn_3);
-        ImageButton button_c = (ImageButton)root.findViewById(R.id.info_btn_4);
+//        ImageButton button_a = (ImageButton)root.findViewById(R.id.info_btn_2);
+//        ImageButton button_b = (ImageButton)root.findViewById(R.id.info_btn_3);
+//        ImageButton button_c = (ImageButton)root.findViewById(R.id.info_btn_4);
 
         btn_open_scnner.setOnClickListener(this::onClick);
-        button_a.setOnClickListener(this::onClick);
-        button_b.setOnClickListener(this::onClick);
-        button_c.setOnClickListener(this::onClick);
+//        button_a.setOnClickListener(this::onClick);
+//        button_b.setOnClickListener(this::onClick);
+//        button_c.setOnClickListener(this::onClick);
 
         return root;
     }
@@ -43,15 +43,15 @@ public class InformationFragment extends Fragment {
                 startActivity(page);
 
                 break;
-            case R.id.info_btn_2:
-
-                break;
-            case R.id.info_btn_3:
-
-                break;
-            case R.id.info_btn_4:
-
-                break;
+//            case R.id.info_btn_2:
+//
+//                break;
+//            case R.id.info_btn_3:
+//
+//                break;
+//            case R.id.info_btn_4:
+//
+//                break;
         }
     }
 }
