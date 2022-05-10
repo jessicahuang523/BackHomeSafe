@@ -119,6 +119,7 @@ public class HistoryFragment extends Fragment {
                 String str_check_in = index.getString("check_in");
                 String str_check_out = index.getString("check_out");
                 String health = index.getString("health");
+                String contain = index.getString("contain");
 
                 if (str_check_out.length() < 5){
                     str_check_out = "2000-01-01 00:00:00";
@@ -134,7 +135,13 @@ public class HistoryFragment extends Fragment {
                 HistoryEntity historyEntity = new HistoryEntity();
                 //historyEntity.setHistory_id(id);
                 historyEntity.setHistory_shop_name(shop_name);
-                historyEntity.setHistory_shop_address("Null");
+                if (contain != null && contain != "null") {
+                    historyEntity.setHistory_shop_address("Customer Number: " + contain);                    
+                }
+                else {
+                    historyEntity.setHistory_shop_address("Customer Number: 0");
+                }
+                //historyEntity.setHistory_shop_address("Null");
                 historyEntity.setHistory_check_in(check_in);
                 if (check_out.equals("01/01 00:00")){
                     check_out = "Exit:empty";

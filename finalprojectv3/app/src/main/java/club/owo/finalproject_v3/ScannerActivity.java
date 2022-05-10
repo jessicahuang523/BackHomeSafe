@@ -41,6 +41,8 @@ public class ScannerActivity extends AppCompatActivity {
     TextView resultData;
     Button check_out_btn;
 
+    private Boolean mCanBackButton = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,9 @@ public class ScannerActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
+
+                        //Disable BackButton
+                        mCanBackButton = false;
 
                         //Starting Write and Read data with URL
                         //Creating array for parameters
@@ -124,6 +129,8 @@ public class ScannerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                mCanBackButton = true;
+
                 String uid = getSharedPreferences("temp_user_data", MODE_PRIVATE).getString("temp_id", "");
                 String ukey = getSharedPreferences("temp_user_data", MODE_PRIVATE).getString("temp_key", "");
                 String shop_id = getSharedPreferences("temp_scanner_data", MODE_PRIVATE).getString("shop_id", "");
@@ -167,7 +174,7 @@ public class ScannerActivity extends AppCompatActivity {
                                 if(result.equals("Action Update Success")){
                                     Intent page = new Intent(getApplicationContext(),MainActivity.class);
                                     startActivity(page);
-                                    Toast.makeText(getApplicationContext(),"Action Success",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Successfully Left Location",Toast.LENGTH_SHORT).show();
                                     finish();
                                 }else {
                                     Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
@@ -213,5 +220,14 @@ public class ScannerActivity extends AppCompatActivity {
     protected void onPause() {
         mCodeScanner.releaseResources();
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCanBackButton) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(getApplicationContext(),"Press \"Leave\" Instead",Toast.LENGTH_SHORT).show();;
+        }
     }
 }
