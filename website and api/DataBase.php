@@ -307,7 +307,7 @@ class DataBase
         FROM user_check_time as DATA 
         LEFT JOIN shop_data AS shop ON shop.id = DATA.shop_id
         LEFT JOIN (SELECT shop_id,COUNT(id) contain FROM user_check_time WHERE check_out IS NULL GROUP BY shop_id) bb ON bb.shop_id = DATA.shop_id
-        WHERE data.uuid = 64 ORDER BY data.id DESC;";
+        WHERE data.uuid = " . $uuid . " ORDER BY data.id DESC;";
         $result = mysqli_query($this->connect, $this->sql);
 
         if (mysqli_num_rows($result) > 0) {
@@ -345,6 +345,8 @@ class DataBase
     //action : List all the Announcement of user
     function list_announce($uuid)
     {
+        mysqli_query($this->connect, "SET CHARACTER SET 'utf8'"); //used to solve getting quesion mark for chinese
+        mysqli_query($this->connect, "SET SESSION collation_connection ='utf8_unicode_ci'"); //used to solve getting quesion mark for chinese
         $this->sql = "SELECT ps.id, GROUP_CONCAT(CASE WHEN dp.meta_key = '_department_name' THEN dp.meta_value ELSE null END) AS depart_name, ic.path AS icon, ps.post_time, img.path as img,ps.post_title FROM announce_post AS ps LEFT JOIN panel_department AS dp ON dp.forward_id = ps.post_department_id LEFT JOIN announce_image_path AS img ON img.img_id = post_img LEFT JOIN announce_icon_path AS ic ON ic.department_id = ps.post_department_id WHERE uid = '" . $uuid . "' GROUP BY ps.id";
         $result = mysqli_query($this->connect, $this->sql);
 
@@ -355,9 +357,9 @@ class DataBase
                 $apps = array();
 
                 $apps["post_id"] = $row["id"];
-                $apps["depart_name"] = "         ";
+                $apps["depart_name"] = "CHP";
                 //$row["depart_name"]
-                $apps["depart_icon"] = "https://wen0750.club/y3_project/html/announce_icon/1200px-Centre_for_Health_Protection.svg.png";
+                $apps["depart_icon"] = "https://www.chp.gov.hk/files/png/chp_facebook_logo.png";
                 //.$row["icon"]
                 $apps["post_time"] = $row["post_time"];
                 $apps["post_image"] = $row["img"];

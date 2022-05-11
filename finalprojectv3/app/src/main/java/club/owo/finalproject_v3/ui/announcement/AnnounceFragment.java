@@ -113,7 +113,7 @@ public class AnnounceFragment extends Fragment {
             for (int i=0;i<history.length();i++){
                 JSONObject index = history.getJSONObject(i);
                 //String post_id = index.getString("post_id");
-                String post_dp = "CHP";
+                String post_dp = index.getString("depart_name");
                 String post_ic = index.getString("depart_icon");
                 String post_tm = index.getString("post_time");
                 String post_im = index.getString("post_image");
