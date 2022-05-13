@@ -129,7 +129,7 @@ public class HistoryFragment extends Fragment {
                 Date new_check_in = format.parse(str_check_in);
                 Date new_check_out = format.parse(str_check_out);
                 format = new SimpleDateFormat("MM/dd HH:mm");
-                String check_in = "Enter:" + format.format(new_check_in);
+                String check_in = format.format(new_check_in);
                 String check_out = format.format(new_check_out);
 
                 HistoryEntity historyEntity = new HistoryEntity();
@@ -144,9 +144,9 @@ public class HistoryFragment extends Fragment {
                 //historyEntity.setHistory_shop_address("Null");
                 historyEntity.setHistory_check_in(check_in);
                 if (check_out.equals("01/01 00:00")){
-                    check_out = "Exit:empty";
+                    check_out = "Empty";
                 }else {
-                    check_out = "Exit:" + check_out;
+                    check_out = check_out;
                 }
                 historyEntity.setHistory_check_out(check_out);
                 historyEntity.setHistory_health(health);
