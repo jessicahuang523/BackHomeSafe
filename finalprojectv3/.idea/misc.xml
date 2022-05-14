@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/qr_code_result.xml" value="0.17300724637681159" />
+        <entry key="app/src/main/res/layout/signin.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/drawable/ic_baseline_book_online_150.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/drawable/ic_baseline_contact_page_150.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/drawable/ic_baseline_qr_code_150.xml" value="0.23802083333333332" />

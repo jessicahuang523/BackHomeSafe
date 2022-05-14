@@ -17,6 +17,7 @@
         <activity android:name="club.owo.finalproject_v3.ShopRegisterActivity" />
         <activity android:name="club.owo.finalproject_v3.SignUpActivity" />
         <activity android:name="club.owo.finalproject_v3.SignInActivity" />
+        <activity android:name="club.owo.finalproject_v3.QRCodeActivity" />
         <activity android:name="club.owo.finalproject_v3.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

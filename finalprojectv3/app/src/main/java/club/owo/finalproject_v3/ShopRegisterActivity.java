@@ -62,8 +62,11 @@ public class ShopRegisterActivity extends AppCompatActivity {
                                 if (shop_reg_input.onComplete()) {
                                     shop_reg_progressbar.setVisibility(View.GONE);
                                     String result = shop_reg_input.getResult();
-                                    if(result.equals("Form Submit Success")){
-                                        Intent page = new Intent(getApplicationContext(),WelcomeActivity.class);
+                                    //if(result.equals("Form Submit Success")){
+                                    if(result.contains(".png")){
+                                        //Intent page = new Intent(getApplicationContext(),WelcomeActivity.class);
+                                        Intent page = new Intent(getApplicationContext(),QRCodeActivity.class);
+                                        page.putExtra("qr_code_address",result);
                                         startActivity(page);
                                         Toast.makeText(getApplicationContext(),"Submit Success",Toast.LENGTH_SHORT).show();
                                         finish();
