@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="40dp"
         android:orientation="vertical"
@@ -39,9 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:minWidth="300dp"
-            android:text="@string/cn_welcome_button_login"
-            android:translationY="120dp"
             android:onClick="welcome_button"
+            android:text="@string/cn_welcome_button_login"
+            android:translationY="60dp"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="300dp"
             tools:layout_editor_absoluteX="56dp"
@@ -54,7 +54,7 @@
             android:layout_gravity="center"
             android:minWidth="300dp"
             android:text="@string/cn_welcome_button_register"
-            android:translationY="140dp"
+            android:translationY="80dp"
             android:onClick="welcome_button"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="300dp"
@@ -68,12 +68,40 @@
             android:layout_gravity="center"
             android:minWidth="300dp"
             android:text="@string/cn_welcome_button_shop_register"
-            android:translationY="160dp"
+            android:translationY="100dp"
             android:onClick="welcome_button"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="300dp"
             tools:layout_editor_absoluteX="56dp"
             tools:layout_editor_absoluteY="516dp" />
+
+        <Button
+            android:id="@+id/welcome_button_report_unsafe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="300dp"
+            android:text="Report Unsafe"
+            android:translationY="120dp"
+            android:onClick="welcome_button"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="300dp"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="584dp" />
+
+        <Button
+            android:id="@+id/welcome_button_report_safe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="300dp"
+            android:text="Report Safe"
+            android:translationY="140dp"
+            android:onClick="welcome_button"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="300dp"
+            tools:layout_editor_absoluteX="56dp"
+            tools:layout_editor_absoluteY="652dp" />
 
     </LinearLayout>
 
