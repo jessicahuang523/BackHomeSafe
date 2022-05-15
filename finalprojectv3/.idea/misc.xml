@@ -17,8 +17,6 @@
         <entry key="app/src/main/res/drawable/ic_scanner_black_24dp.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/drawable/test2.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17300724637681159" />
-        <entry key="app/src/main/res/layout/activity_report_safe.xml" value="0.13179347826086957" />
-        <entry key="app/src/main/res/layout/activity_report_unsafe.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_announce.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_announce_row.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.1" />
@@ -30,7 +28,7 @@
         <entry key="app/src/main/res/layout/shop_register.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/signin.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/signup.xml" value="0.17300724637681159" />
-        <entry key="app/src/main/res/layout/welcome.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/welcome.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.221875" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23802083333333332" />
       </map>

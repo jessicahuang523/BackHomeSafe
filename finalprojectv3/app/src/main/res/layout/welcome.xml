@@ -81,27 +81,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:minWidth="300dp"
-            android:text="Report Unsafe"
+            android:text="Report Shop Status"
             android:translationY="120dp"
             android:onClick="welcome_button"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="300dp"
             tools:layout_editor_absoluteX="56dp"
             tools:layout_editor_absoluteY="584dp" />
-
-        <Button
-            android:id="@+id/welcome_button_report_safe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minWidth="300dp"
-            android:text="Report Safe"
-            android:translationY="140dp"
-            android:onClick="welcome_button"
-            tools:layout_conversion_absoluteHeight="48dp"
-            tools:layout_conversion_absoluteWidth="300dp"
-            tools:layout_editor_absoluteX="56dp"
-            tools:layout_editor_absoluteY="652dp" />
 
     </LinearLayout>
 

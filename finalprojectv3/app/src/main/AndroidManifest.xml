@@ -9,10 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Finalprojectv3">
         <activity
-            android:name=".ReportSafeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ReportUnsafeActivity"
+            android:name=".ReportShopStatusActivity"
             android:exported="false" />
         <activity android:name=".ScannerActivity" />
         <activity

@@ -34,10 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
             Intent page = new Intent(this, club.owo.finalproject_v3.ShopRegisterActivity.class);
             startActivity(page);
         } else if (view.getId() == R.id.welcome_button_report_unsafe) {
-            Intent page = new Intent(this, club.owo.finalproject_v3.ReportUnsafeActivity.class);
-            startActivity(page);
-        } else if (view.getId() == R.id.welcome_button_report_safe) {
-            Intent page = new Intent(this, club.owo.finalproject_v3.ReportSafeActivity.class);
+            Intent page = new Intent(this, club.owo.finalproject_v3.ReportShopStatusActivity.class);
             startActivity(page);
         }
     }
