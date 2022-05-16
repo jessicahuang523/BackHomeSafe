@@ -97,6 +97,7 @@ public class AnnounceFragment extends Fragment {
                         SharedPreferences.Editor editor = temp_user_data.edit();
                         editor.putString("announce", dresult);
                         editor.apply();
+                        //下面這part一定要寫在onComplete裏面，不然很可能設置view的時間會太早，資料還沒fetch好。
                         try {
                             SharedPreferences get_history_data = getActivity().getSharedPreferences("temp_announce_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
                             String history_data = get_history_data.getString("announce", "");
