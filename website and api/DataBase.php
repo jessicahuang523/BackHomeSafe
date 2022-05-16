@@ -1,6 +1,8 @@
 <?php
 require "DataBaseConfig.php";
-
+require "lib/phpqrcode/qrlib.php";
+// QRcode::png();
+// $x = new QRcode();
 class DataBase
 {
     public $connect;
@@ -202,7 +204,11 @@ class DataBase
 
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
-            return $row['qr_code'];
+            $filepath = 'images/' . $row['qr_code'] . uniqid() . '.png';
+            QRcode::png($row['qr_code'], $filepath);
+            $imageURL = 'https://backhomesafe.herokuapp.com/' . $filepath;
+            return $imageURL;
+            // return $row['qr_code'];
         } else return false;
     }
 
@@ -223,24 +229,22 @@ class DataBase
         }
         return false;
     }
+    //qr : gen qr code meta id
+    function qr_generateRandomString($length = 26)
+    {
+        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
+    }
 
     //qr : insert shop qr code meta id to sql
     function qr_insert($shop_id)
     {
         $shop_id = $this->prepareData($shop_id);
-        $qr_metacode = new qr_generateRandomString;
-
+        $qr_metacode = $this->qr_generateRandomString();
         $this->sql = "INSERT INTO shop_qr (shop_id, qr_code) VALUES ('" . $shop_id . "', '" . $qr_metacode . "')";
         if (mysqli_query($this->connect, $this->sql)) {
 
             return true;
         } else return false;
-    }
-
-    //qr : gen qr code meta id
-    function qr_generateRandomString($length = 26)
-    {
-        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
     }
 
     //action : check user action permission
@@ -267,8 +271,8 @@ class DataBase
         $uuid = $this->prepareData($uuid);
         $shop_id = $this->prepareData($shop_id);
 
-        $this->sql = "INSERT INTO user_check_time (uuid,shop_id) VALUES ('" . $uuid . "','" . $shop_id . "')";
-
+        //$this->sql = "INSERT INTO user_check_time (uuid,shop_id) VALUES ('" . $uuid . "','" . $shop_id . "')";
+        $this->sql = "INSERT INTO user_check_time (uuid,shop_id,check_in) VALUES ('" . $uuid . "','" . $shop_id . "',NOW() + INTERVAL 8 HOUR)"; //因為伺服器的時區關係，所以時間要加8小時
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
         } else return false;
@@ -369,5 +373,25 @@ class DataBase
             }
             return json_encode($response);
         } else return false;
+    }
+    //mark a shop as danger or not
+    function mark_danger($register_id, $danger)
+    {
+        $health_status = 0;
+        if ($danger == "danger") {
+            $health_status = 1;
+        } else {
+            $health_status = 0;
+        }
+        $this->sql = "UPDATE user_check_time JOIN shop_data ON user_check_time.shop_id=shop_data.id SET user_check_time.health =" . $health_status . " WHERE shop_data.register_id= '" . $register_id . "'";
+        if (mysqli_query($this->connect, $this->sql)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //check admin
+    function check_admin()
+    {
     }
 }

@@ -46,7 +46,7 @@ public class HistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        initRecyclerView();
+
         initData();
 
         return view;
@@ -99,61 +99,63 @@ public class HistoryFragment extends Fragment {
                         SharedPreferences.Editor editor = temp_user_data.edit();
                         editor.putString("history", dresult);
                         editor.apply();
+                        try {
+                            SharedPreferences get_history_data = getActivity().getSharedPreferences("temp_history_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
+                            String history_data = get_history_data.getString("history", "");
+
+                            JSONObject response = new JSONObject(history_data);
+                            JSONArray history = response.getJSONArray("history");
+
+                            //JSONArray history = new JSONArray(history_data);
+
+                            for (int i=0;i<history.length();i++){
+                                JSONObject index = history.getJSONObject(i);
+                                String id = index.getString("id");
+                                String shop_name = index.getString("company_name");
+                                String str_check_in = index.getString("check_in");
+                                String str_check_out = index.getString("check_out");
+                                String health = index.getString("health");
+                                String contain = index.getString("contain");
+
+                                if (str_check_out.length() < 5){
+                                    str_check_out = "2000-01-01 00:00:00";
+                                }
+
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date new_check_in = format.parse(str_check_in);
+                                Date new_check_out = format.parse(str_check_out);
+                                format = new SimpleDateFormat("MM/dd HH:mm");
+                                String check_in = format.format(new_check_in);
+                                String check_out = format.format(new_check_out);
+
+                                HistoryEntity historyEntity = new HistoryEntity();
+                                //historyEntity.setHistory_id(id);
+                                historyEntity.setHistory_shop_name(shop_name);
+                                if (contain != null && contain != "null") {
+                                    historyEntity.setHistory_shop_address("Customer Number: " + contain);
+                                }
+                                else {
+                                    historyEntity.setHistory_shop_address("Customer Number: 0");
+                                }
+                                //historyEntity.setHistory_shop_address("Null");
+                                historyEntity.setHistory_check_in(check_in);
+                                if (check_out.equals("01/01 00:00")){
+                                    check_out = "Empty";
+                                }else {
+                                    check_out = check_out;
+                                }
+                                historyEntity.setHistory_check_out(check_out);
+                                historyEntity.setHistory_health(health);
+
+                                historyEntities.add(historyEntity);
+                            }
+                        } catch(Exception e) {e.printStackTrace();}
+                        initRecyclerView();
                     }
                 }
             }
         });
-        try {
-            SharedPreferences get_history_data = getActivity().getSharedPreferences("temp_history_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
-            String history_data = get_history_data.getString("history", "");
 
-            JSONObject response = new JSONObject(history_data);
-            JSONArray history = response.getJSONArray("history");
-
-            //JSONArray history = new JSONArray(history_data);
-
-            for (int i=0;i<history.length();i++){
-                JSONObject index = history.getJSONObject(i);
-                String id = index.getString("id");
-                String shop_name = index.getString("company_name");
-                String str_check_in = index.getString("check_in");
-                String str_check_out = index.getString("check_out");
-                String health = index.getString("health");
-                String contain = index.getString("contain");
-
-                if (str_check_out.length() < 5){
-                    str_check_out = "2000-01-01 00:00:00";
-                }
-
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date new_check_in = format.parse(str_check_in);
-                Date new_check_out = format.parse(str_check_out);
-                format = new SimpleDateFormat("MM/dd HH:mm");
-                String check_in = format.format(new_check_in);
-                String check_out = format.format(new_check_out);
-
-                HistoryEntity historyEntity = new HistoryEntity();
-                //historyEntity.setHistory_id(id);
-                historyEntity.setHistory_shop_name(shop_name);
-                if (contain != null && contain != "null") {
-                    historyEntity.setHistory_shop_address("Customer Number: " + contain);                    
-                }
-                else {
-                    historyEntity.setHistory_shop_address("Customer Number: 0");
-                }
-                //historyEntity.setHistory_shop_address("Null");
-                historyEntity.setHistory_check_in(check_in);
-                if (check_out.equals("01/01 00:00")){
-                    check_out = "Empty";
-                }else {
-                    check_out = check_out;
-                }
-                historyEntity.setHistory_check_out(check_out);
-                historyEntity.setHistory_health(health);
-
-                historyEntities.add(historyEntity);
-            }
-        } catch(Exception e) {e.printStackTrace();}
 
     }
 }

@@ -44,7 +44,7 @@ public class AnnounceFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_announce, container, false);
 
-        initRecyclerView();
+
         initData();
 
         return view;
@@ -97,39 +97,41 @@ public class AnnounceFragment extends Fragment {
                         SharedPreferences.Editor editor = temp_user_data.edit();
                         editor.putString("announce", dresult);
                         editor.apply();
+                        try {
+                            SharedPreferences get_history_data = getActivity().getSharedPreferences("temp_announce_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
+                            String history_data = get_history_data.getString("announce", "");
+
+                            JSONObject response = new JSONObject(history_data);
+                            JSONArray history = response.getJSONArray("announce");
+
+                            //JSONArray history = new JSONArray(history_data);
+
+                            for (int i=0;i<history.length();i++){
+                                JSONObject index = history.getJSONObject(i);
+                                //String post_id = index.getString("post_id");
+                                String post_dp = index.getString("depart_name");
+                                String post_ic = index.getString("depart_icon");
+                                String post_tm = index.getString("post_time");
+                                String post_im = index.getString("post_image");
+                                String post_tt = index.getString("post_title");
+
+                                AnnounceEntity announceEntity = new AnnounceEntity();
+                                //announceEntity.setAnnounce_id(post_id);
+                                announceEntity.setAnnounce_post_dp(post_dp);
+                                announceEntity.setAnnounce_post_dp_icon(post_ic);
+                                announceEntity.setAnnounce_post_time(post_tm);
+                                announceEntity.setAnnounce_image_address(post_im);
+                                announceEntity.setAnnounce_title(post_tt);
+
+                                announceEntities.add(announceEntity);
+                            }
+                        } catch(Exception e) {e.printStackTrace();}
+                        initRecyclerView();
                     }
                 }
             }
         });
-        try {
-            SharedPreferences get_history_data = getActivity().getSharedPreferences("temp_announce_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
-            String history_data = get_history_data.getString("announce", "");
 
-            JSONObject response = new JSONObject(history_data);
-            JSONArray history = response.getJSONArray("announce");
-
-            //JSONArray history = new JSONArray(history_data);
-
-            for (int i=0;i<history.length();i++){
-                JSONObject index = history.getJSONObject(i);
-                //String post_id = index.getString("post_id");
-                String post_dp = index.getString("depart_name");
-                String post_ic = index.getString("depart_icon");
-                String post_tm = index.getString("post_time");
-                String post_im = index.getString("post_image");
-                String post_tt = index.getString("post_title");
-
-                AnnounceEntity announceEntity = new AnnounceEntity();
-                //announceEntity.setAnnounce_id(post_id);
-                announceEntity.setAnnounce_post_dp(post_dp);
-                announceEntity.setAnnounce_post_dp_icon(post_ic);
-                announceEntity.setAnnounce_post_time(post_tm);
-                announceEntity.setAnnounce_image_address(post_im);
-                announceEntity.setAnnounce_title(post_tt);
-
-                announceEntities.add(announceEntity);
-            }
-        } catch(Exception e) {e.printStackTrace();}
 
     }
 }
