@@ -4,10 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/activity_main.xml" value="0.17447916666666666" />
+        <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/activity_report_shop_status.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/fragment_announce.xml" value="0.17447916666666666" />
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/fragment_announce_row.xml" value="0.17447916666666666" />
+        <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/fragment_history.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/fragment_history_row_iteam.xml" value="0.17447916666666666" />
+        <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/fragment_information.xml" value="0.17447916666666666" />
+        <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/qr_code_result.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/signin.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/signup.xml" value="0.17447916666666666" />
         <entry key="..\:/Users/kodyg/Desktop/3310project/BackHomeSafe/finalprojectv3/app/src/main/res/layout/welcome.xml" value="0.17447916666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_book_online_150.xml" value="0.23802083333333332" />
