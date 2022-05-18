@@ -37,4 +37,5 @@
     <string name="info_page_button_health_history">Health History</string>
     <string name="info_page_button_booking">Booking System</string>
     <string name="no_data">No Data.</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

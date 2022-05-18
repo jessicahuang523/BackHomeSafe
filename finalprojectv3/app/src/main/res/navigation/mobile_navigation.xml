@@ -27,4 +27,9 @@
         android:name="club.owo.finalproject_v3.ui.information.InformationFragment"
         android:label="@string/title_scanner"
         tools:layout="@layout/fragment_information" />
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="club.owo.finalproject_v3.MapsFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_maps" />
 </navigation>
