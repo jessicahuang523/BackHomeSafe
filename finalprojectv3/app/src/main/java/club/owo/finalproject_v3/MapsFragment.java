@@ -8,8 +8,14 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,10 +43,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements LocationListener {
 
     private GoogleMap mMap;
 
@@ -49,6 +57,7 @@ public class MapsFragment extends Fragment {
     private double[] mNEBounds = {0,0};
     private LatLngBounds mMapBounds;
     private Stack<Marker> mMarkerStack = new Stack<Marker>();
+    private LocationManager mLocationManager;
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -259,6 +268,10 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        try{        mLocationManager=(LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,this);}
+        catch (Exception e){e.printStackTrace();}
+
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -269,6 +282,28 @@ public class MapsFragment extends Fragment {
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+
+        try{
+//            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+//            String address=addresses.get(0).getAddressLine(0);
+//            Toast.makeText(this.getActivity(), address, Toast.LENGTH_SHORT).show();
+            //thresold暫定為0.00047
+            boolean isSafe=true;
+            for (String[] f : mShopData){
+                if(Math.abs(location.getLatitude()-Double.parseDouble(f[2]))+Math.abs(location.getLongitude()-Double.parseDouble(f[3]))<0.00047){
+                    isSafe=false;
+                }
+            }
+           if(isSafe==false){ Toast.makeText(this.getActivity(), "you are near to an unsafe shop!", Toast.LENGTH_SHORT).show();}
+           else Toast.makeText(this.getActivity(), "you are safe", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
