@@ -18,6 +18,7 @@ import com.vishnusivadas.advanced_httpurlconnection.PutData;
 public class ShopRegisterActivity extends AppCompatActivity {
 
     EditText textInputEditTextshop_name,textInputEditTextShop_reg_id,textInputEditTextTelephone;
+    EditText textInputEditTextshop_lat,textInputEditTextshop_long;
     Button buttonShop_Reg_Submit;
     ProgressBar shop_reg_progressbar;
 
@@ -29,16 +30,20 @@ public class ShopRegisterActivity extends AppCompatActivity {
         textInputEditTextshop_name = findViewById(R.id.shop_reg_input_name);
         textInputEditTextShop_reg_id = findViewById(R.id.shop_reg_input_rid);
         textInputEditTextTelephone = findViewById(R.id.shop_reg_input_telephone);
+        textInputEditTextshop_lat = findViewById(R.id.shop_reg_input_lat);
+        textInputEditTextshop_long = findViewById(R.id.shop_reg_input_long);
         buttonShop_Reg_Submit = findViewById(R.id.shop_reg_submit);
         shop_reg_progressbar = findViewById(R.id.shop_reg_progressbar);
 
         buttonShop_Reg_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String shop_name,shop_rid,shop_telephone;
+                String shop_name,shop_rid,shop_telephone,shop_lat,shop_long;
                 shop_name = String.valueOf(textInputEditTextshop_name.getText());
                 shop_rid = String.valueOf(textInputEditTextShop_reg_id.getText());
                 shop_telephone = String.valueOf(textInputEditTextTelephone.getText());
+                shop_lat = String.valueOf(textInputEditTextTelephone.getText());
+                shop_long = String.valueOf(textInputEditTextTelephone.getText());
 
                 if(!shop_name.equals("") && !shop_rid.equals("") && !shop_telephone.equals("")) {
                     shop_reg_progressbar.setVisibility(View.VISIBLE);
@@ -47,14 +52,18 @@ public class ShopRegisterActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
-                            String[] field = new String[3];
+                            String[] field = new String[5];
                             field[0] = "shop_name";
                             field[1] = "shop_reg_id";
                             field[2] = "shop_telephone";
-                            String[] data = new String[3];
+                            field[3] = "shop_lat";
+                            field[4] = "shop_lng";
+                            String[] data = new String[5];
                             data[0] = shop_name;
                             data[1] = shop_rid;
                             data[2] = shop_telephone;
+                            data[3] = shop_lat;
+                            data[4] = shop_long;
 
                             PutData shop_reg_input = new PutData("https://backhomesafe.herokuapp.com/shopregister.php", "POST", field, data);
                             if (shop_reg_input.startPut()) {

@@ -17,6 +17,8 @@
     <string name="cn_shop_name">Business Title</string>
     <string name="cn_shop_RID">Business ID</string>
     <string name="cn_shop_telephone">Phone Number</string>
+    <string name="cn_shop_lat">Latitude</string>
+    <string name="cn_shop_long">Longitude</string>
     <string name="cn_loing_title">Log In</string>
     <string name="cn_loing_confirm">Log In</string>
     <string name="cn_loing_email">Email Address</string>

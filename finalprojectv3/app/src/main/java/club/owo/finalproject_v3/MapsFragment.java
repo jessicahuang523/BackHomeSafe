@@ -4,7 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +18,33 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.vishnusivadas.advanced_httpurlconnection.PutData;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Stack;
+
 
 public class MapsFragment extends Fragment {
+
+    private GoogleMap mMap;
+
+    private List<String[]> mShopData = new ArrayList<String[]>();
+    private List<Marker> mMapMarkers = new ArrayList<Marker>();
+    private double[] mSWBounds = {0,0};
+    private double[] mNEBounds = {0,0};
+    private LatLngBounds mMapBounds;
+    private Stack<Marker> mMarkerStack = new Stack<Marker>();
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -31,11 +59,172 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            mMap = googleMap;
+//            LatLng cuhk_shb = new LatLng(22.418014,	114.207259);
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(cuhk_shb));
+
+            initMapData();
+
         }
     };
+
+    public void goToMarkerClicked(Marker marker) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 18));
+        marker.showInfoWindow();
+    }
+
+    public void resetMap(){
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(mMapBounds, 0));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMapBounds.getCenter(), 16));
+
+        for (Marker m : mMapMarkers){
+            m.hideInfoWindow();
+        }
+
+        mMarkerStack.clear();
+    }
+
+    public void initMapData(){
+        SharedPreferences preferences = getActivity().getSharedPreferences("temp_user_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
+        String uid = preferences.getString("temp_id", "");
+        String ukey = preferences.getString("temp_key", "");
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                //Starting Write and Read data with URL
+                //Creating array for parameters
+                String[] field = new String[3];
+                field[0] = "uuid";
+                field[1] = "pass_key";
+                field[2] = "at_type";
+                //Creating array for data
+                String[] data = new String[3];
+                data[0] = uid;
+                data[1] = ukey;
+                data[2] = "get_history";
+
+                PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
+                if (putData.startPut()) {
+                    if (putData.onComplete()) {
+                        String dresult = putData.getResult();
+
+                        SharedPreferences temp_user_data = getActivity().getSharedPreferences("temp_history_data", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = temp_user_data.edit();
+                        editor.putString("history", dresult);
+                        editor.apply();
+                        try {
+                            SharedPreferences get_history_data = getActivity().getSharedPreferences("temp_history_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
+                            String history_data = get_history_data.getString("history", "");
+
+                            //JSONObject response = new JSONObject(dresult);
+                            JSONObject response = new JSONObject(history_data);
+                            JSONArray history = response.getJSONArray("history");
+                            boolean firstWrite = true;
+
+                            //JSONArray history = new JSONArray(history_data);
+
+                            for (int i=0;i<history.length();i++){
+                                JSONObject index = history.getJSONObject(i);
+                                String id = index.getString("id");
+                                String shop_name = index.getString("company_name");
+                                String shop_lat = index.getString("lat");
+                                String shop_long = index.getString("lng");
+                                String str_check_in = index.getString("check_in");
+                                String str_check_out = index.getString("check_out");
+                                String health = index.getString("health");
+                                String contain = index.getString("contain");
+
+                                if (str_check_out.length() < 5){
+                                    str_check_out = "2000-01-01 00:00:00";
+                                }
+
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date new_check_in = format.parse(str_check_in);
+                                Date new_check_out = format.parse(str_check_out);
+                                format = new SimpleDateFormat("MM/dd HH:mm");
+                                String check_in = format.format(new_check_in);
+                                String check_out = format.format(new_check_out);
+
+                                String[] shopData = {shop_name, health, shop_lat, shop_long};
+                                mShopData.add(shopData);
+                                if (firstWrite) {
+                                    mSWBounds[0] = Double.parseDouble(shopData[2]);
+                                    mSWBounds[1] = Double.parseDouble(shopData[3]);
+                                    mNEBounds[0] = Double.parseDouble(shopData[2]);
+                                    mNEBounds[1] = Double.parseDouble(shopData[3]);
+                                    firstWrite = false;
+                                }
+                                if(mSWBounds[0] > Double.parseDouble(shopData[2])){
+                                    mSWBounds[0] = Double.parseDouble(shopData[2]);
+                                }
+                                if(mSWBounds[1] > Double.parseDouble(shopData[3])){
+                                    mSWBounds[1] = Double.parseDouble(shopData[3]);
+                                }
+                                if(mNEBounds[0] < Double.parseDouble(shopData[2])){
+                                    mNEBounds[0] = Double.parseDouble(shopData[2]);
+                                }
+                                if(mNEBounds[1] < Double.parseDouble(shopData[3])){
+                                    mNEBounds[1] = Double.parseDouble(shopData[3]);
+                                }
+                            }
+                            if (mShopData != null && !mShopData.isEmpty()) {
+                                LatLngBounds mapBounds = new LatLngBounds(
+                                        new LatLng(mSWBounds[0], mSWBounds[1]), // SW bounds
+                                        new LatLng(mNEBounds[0], mNEBounds[1])  // NE bounds
+                                );
+                                mMapBounds = mapBounds;
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapBounds.getCenter(), 15));
+
+                                int tagNumber = 0;
+                                for (String[] f : mShopData) {
+                                    LatLng fLocation = new LatLng(Double.parseDouble(f[2]), Double.parseDouble(f[3]));
+                                    if (f[1] == "1") {
+                                        Marker fMarker = mMap.addMarker(new MarkerOptions()
+                                                .position(fLocation)
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                                                .title(f[0] + " (Unsafe)"));
+                                        fMarker.setTag(Integer.toString(tagNumber));
+                                        mMapMarkers.add(fMarker);
+                                    } else {
+                                        Marker fMarker = mMap.addMarker(new MarkerOptions()
+                                                .position(fLocation)
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                                                .title(f[0]));
+                                        fMarker.setTag(Integer.toString(tagNumber));
+                                        mMapMarkers.add(fMarker);
+                                    }
+                                    tagNumber++;
+                                }
+
+                                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                    @Override
+                                    public boolean onMarkerClick(Marker marker) {
+                                        mMarkerStack.push(marker);
+                                        String markerTag = (String) marker.getTag();
+
+                                        goToMarkerClicked(marker);
+                                        return true;
+                                    }
+                                });
+
+                                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                                    @Override
+                                    public void onMapClick(LatLng point) {
+                                        resetMap();
+                                    }
+                                });
+                            }
+                        }
+                        catch(Exception e) {e.printStackTrace();}
+                    }
+                }
+            }
+        });
+    }
 
     @Nullable
     @Override
