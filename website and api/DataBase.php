@@ -144,14 +144,16 @@ class DataBase
     }
 
     //shop : write the shop data into sql
-    function shop_register($shop_name, $shop_register_id, $shop_telephone)
+    function shop_register($shop_name, $shop_register_id, $shop_telephone, $shop_lat, $shop_lng)
     {
         $shop_name = $this->prepareData($shop_name);
         $shop_register_id = $this->prepareData($shop_register_id);
         $shop_telephone = $this->prepareData($shop_telephone);
         $table = $this->prepareData($table);
+        $shop_lat = $this->prepareData($shop_lat);
+        $shop_lng = $this->prepareData($shop_lng);
 
-        $this->sql = "INSERT INTO shop_data (company_name,register_id,telephone) VALUES ('" . $shop_name . "','" . $shop_register_id . "','" . $shop_telephone . "')";
+        $this->sql = "INSERT INTO shop_data (company_name,register_id,telephone,lat,lng) VALUES ('" . $shop_name . "','" . $shop_register_id . "','" . $shop_telephone . "'," . "$shop_lat" . "," . "$shop_lng" . ")";
 
         if (mysqli_query($this->connect, $this->sql)) {
             return true;
@@ -304,6 +306,8 @@ class DataBase
         $this->sql = "SELECT 
         data.id,
         shop.company_name,
+        shop.lat,
+        shop.lng,
         data.check_in,
         data.check_out,
         data.health,
@@ -324,6 +328,8 @@ class DataBase
 
                 $apps["id"] = $row["id"];
                 $apps["company_name"] = $row["company_name"];
+                $apps["lat"] = $row["lat"];
+                $apps["lng"] = $row["lng"];
                 $apps["check_in"] = $row["check_in"];
                 $apps["check_out"] = $row["check_out"];
                 $apps["health"] = $row["health"];

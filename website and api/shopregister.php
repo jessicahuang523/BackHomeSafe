@@ -1,10 +1,10 @@
 <?php
 require "DataBase.php";
 $db = new DataBase();
-if (isset($_POST['shop_name']) && isset($_POST['shop_reg_id']) && isset($_POST['shop_telephone'])) {
+if (isset($_POST['shop_name']) && isset($_POST['shop_reg_id']) && isset($_POST['shop_telephone']) && isset($_POST['shop_lat']) && isset($_POST['shop_lng'])) {
 	if ($db->dbConnect()) {
 		if ($db->shop_check($_POST['shop_reg_id'])) {
-			if ($db->shop_register($_POST['shop_name'], $_POST['shop_reg_id'], $_POST['shop_telephone'])) {
+			if ($db->shop_register($_POST['shop_name'], $_POST['shop_reg_id'], $_POST['shop_telephone'], $_POST['shop_lat'], $_POST['shop_lng'])) {
 				//get the shop_id with the shop_register_id
 				if ($db->get_sid_wrid($_POST['shop_reg_id'])) {
 

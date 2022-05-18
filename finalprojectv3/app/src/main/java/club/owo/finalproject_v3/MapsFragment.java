@@ -2,10 +2,14 @@ package club.owo.finalproject_v3;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -45,7 +49,32 @@ public class MapsFragment extends Fragment {
     private double[] mNEBounds = {0,0};
     private LatLngBounds mMapBounds;
     private Stack<Marker> mMarkerStack = new Stack<Marker>();
-
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this.getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        // Check if location permissions are granted and if so enable the
+        // location data layer.
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0
+                        && grantResults[0]
+                        == PackageManager.PERMISSION_GRANTED) {
+                    enableMyLocation();
+                    break;
+                }
+        }}
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -62,9 +91,8 @@ public class MapsFragment extends Fragment {
             mMap = googleMap;
 //            LatLng cuhk_shb = new LatLng(22.418014,	114.207259);
 //            mMap.moveCamera(CameraUpdateFactory.newLatLng(cuhk_shb));
-
             initMapData();
-
+            enableMyLocation();
         }
     };
 
@@ -182,7 +210,7 @@ public class MapsFragment extends Fragment {
                                 int tagNumber = 0;
                                 for (String[] f : mShopData) {
                                     LatLng fLocation = new LatLng(Double.parseDouble(f[2]), Double.parseDouble(f[3]));
-                                    if (f[1] == "1") {
+                                    if (f[1].equals("1") ) {
                                         Marker fMarker = mMap.addMarker(new MarkerOptions()
                                                 .position(fLocation)
                                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -192,7 +220,7 @@ public class MapsFragment extends Fragment {
                                     } else {
                                         Marker fMarker = mMap.addMarker(new MarkerOptions()
                                                 .position(fLocation)
-                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                                                 .title(f[0]));
                                         fMarker.setTag(Integer.toString(tagNumber));
                                         mMapMarkers.add(fMarker);
