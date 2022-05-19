@@ -42,10 +42,10 @@ public class ShopRegisterActivity extends AppCompatActivity {
                 shop_name = String.valueOf(textInputEditTextshop_name.getText());
                 shop_rid = String.valueOf(textInputEditTextShop_reg_id.getText());
                 shop_telephone = String.valueOf(textInputEditTextTelephone.getText());
-                shop_lat = String.valueOf(textInputEditTextTelephone.getText());
-                shop_long = String.valueOf(textInputEditTextTelephone.getText());
+                shop_lat = String.valueOf(textInputEditTextshop_lat.getText());
+                shop_long = String.valueOf(textInputEditTextshop_long.getText());
 
-                if(!shop_name.equals("") && !shop_rid.equals("") && !shop_telephone.equals("")) {
+                if(!shop_name.equals("") && !shop_rid.equals("") && !shop_telephone.equals("")&& !shop_lat.equals("")&& !shop_long.equals("")) {
                     shop_reg_progressbar.setVisibility(View.VISIBLE);
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -64,7 +64,8 @@ public class ShopRegisterActivity extends AppCompatActivity {
                             data[2] = shop_telephone;
                             data[3] = shop_lat;
                             data[4] = shop_long;
-
+                            Log.d("shop_lat",shop_lat);
+                            Log.d("shop_lng",shop_long);
                             PutData shop_reg_input = new PutData("https://backhomesafe.herokuapp.com/shopregister.php", "POST", field, data);
                             if (shop_reg_input.startPut()) {
 
