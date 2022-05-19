@@ -65,7 +65,7 @@ public class MapsFragment extends Fragment implements LocationListener {
     private LatLngBounds mMapBounds;
     private Stack<Marker> mMarkerStack = new Stack<Marker>();
     private LocationManager mLocationManager;
-
+    private boolean mIsSafe=true;
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -326,22 +326,27 @@ public class MapsFragment extends Fragment implements LocationListener {
 //            String address=addresses.get(0).getAddressLine(0);
 //            Toast.makeText(this.getActivity(), address, Toast.LENGTH_SHORT).show();
             //thresold暫定為0.00047
-            boolean isSafe=true;
+            boolean hasUnsafe=false;
             for (String[] f : mShopData){
                 if(Math.abs(location.getLatitude()-Double.parseDouble(f[2]))+Math.abs(location.getLongitude()-Double.parseDouble(f[3]))<0.00047){
-                    isSafe=false;
+                    hasUnsafe=true;
+                    if(mIsSafe==true){//可以想像如果沒了這個checking，那用戶在unsafe附近時就會瘋狂收到通知
+
+                        sendNotification();
+                        Log.d("dwaw","unsafeCallback");
+                        mIsSafe=false;}
                 }
             }
-            if(isSafe==false){
-                sendNotification();
+            if(hasUnsafe==false){mIsSafe=true;}
+
+
                 //Toast.makeText(this.getActivity(), "you are near to an unsafe shop!", Toast.LENGTH_SHORT).show();
-            }
-            else Toast.makeText(this.getActivity(), "you are safe", Toast.LENGTH_SHORT).show();
+
+            //else Toast.makeText(this.getActivity(), "you are safe", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-    public void checkSafe(){}
     public void sendNotification() {
         NotificationCompat.Builder builder
                 = new NotificationCompat.Builder(this.requireContext(),CHANNEL_ID)
