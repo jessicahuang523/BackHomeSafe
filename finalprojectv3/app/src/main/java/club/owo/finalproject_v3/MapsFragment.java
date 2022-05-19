@@ -3,11 +3,15 @@ package club.owo.finalproject_v3;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,9 +20,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+//import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,13 +57,15 @@ public class MapsFragment extends Fragment implements LocationListener {
 
     private GoogleMap mMap;
 
+    private String CHANNEL_ID = "BHS";
     private List<String[]> mShopData = new ArrayList<String[]>();
     private List<Marker> mMapMarkers = new ArrayList<Marker>();
-    private double[] mSWBounds = {0,0};
-    private double[] mNEBounds = {0,0};
+    private double[] mSWBounds = {0, 0};
+    private double[] mNEBounds = {0, 0};
     private LatLngBounds mMapBounds;
     private Stack<Marker> mMarkerStack = new Stack<Marker>();
     private LocationManager mLocationManager;
+
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this.getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -69,6 +77,7 @@ public class MapsFragment extends Fragment implements LocationListener {
                     1);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -83,7 +92,9 @@ public class MapsFragment extends Fragment implements LocationListener {
                     enableMyLocation();
                     break;
                 }
-        }}
+        }
+    }
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -110,19 +121,19 @@ public class MapsFragment extends Fragment implements LocationListener {
         marker.showInfoWindow();
     }
 
-    public void resetMap(){
+    public void resetMap() {
         //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(mMapBounds, 0));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(16));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMapBounds.getCenter(), 16));
 
-        for (Marker m : mMapMarkers){
+        for (Marker m : mMapMarkers) {
             m.hideInfoWindow();
         }
 
         mMarkerStack.clear();
     }
 
-    public void initMapData(){
+    public void initMapData() {
         SharedPreferences preferences = getActivity().getSharedPreferences("temp_user_data", Activity.MODE_PRIVATE);  //Frequent to get SharedPreferences need to add a step getActivity () method
         String uid = preferences.getString("temp_id", "");
         String ukey = preferences.getString("temp_key", "");
@@ -164,7 +175,7 @@ public class MapsFragment extends Fragment implements LocationListener {
 
                             //JSONArray history = new JSONArray(history_data);
 
-                            for (int i=0;i<history.length();i++){
+                            for (int i = 0; i < history.length(); i++) {
                                 JSONObject index = history.getJSONObject(i);
                                 String id = index.getString("id");
                                 String shop_name = index.getString("company_name");
@@ -175,7 +186,7 @@ public class MapsFragment extends Fragment implements LocationListener {
                                 String health = index.getString("health");
                                 String contain = index.getString("contain");
 
-                                if (str_check_out.length() < 5){
+                                if (str_check_out.length() < 5) {
                                     str_check_out = "2000-01-01 00:00:00";
                                 }
 
@@ -195,16 +206,16 @@ public class MapsFragment extends Fragment implements LocationListener {
                                     mNEBounds[1] = Double.parseDouble(shopData[3]);
                                     firstWrite = false;
                                 }
-                                if(mSWBounds[0] > Double.parseDouble(shopData[2])){
+                                if (mSWBounds[0] > Double.parseDouble(shopData[2])) {
                                     mSWBounds[0] = Double.parseDouble(shopData[2]);
                                 }
-                                if(mSWBounds[1] > Double.parseDouble(shopData[3])){
+                                if (mSWBounds[1] > Double.parseDouble(shopData[3])) {
                                     mSWBounds[1] = Double.parseDouble(shopData[3]);
                                 }
-                                if(mNEBounds[0] < Double.parseDouble(shopData[2])){
+                                if (mNEBounds[0] < Double.parseDouble(shopData[2])) {
                                     mNEBounds[0] = Double.parseDouble(shopData[2]);
                                 }
-                                if(mNEBounds[1] < Double.parseDouble(shopData[3])){
+                                if (mNEBounds[1] < Double.parseDouble(shopData[3])) {
                                     mNEBounds[1] = Double.parseDouble(shopData[3]);
                                 }
                             }
@@ -219,7 +230,7 @@ public class MapsFragment extends Fragment implements LocationListener {
                                 int tagNumber = 0;
                                 for (String[] f : mShopData) {
                                     LatLng fLocation = new LatLng(Double.parseDouble(f[2]), Double.parseDouble(f[3]));
-                                    if (f[1].equals("1") ) {
+                                    if (f[1].equals("1")) {
                                         Marker fMarker = mMap.addMarker(new MarkerOptions()
                                                 .position(fLocation)
                                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
@@ -255,8 +266,9 @@ public class MapsFragment extends Fragment implements LocationListener {
                                     }
                                 });
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        catch(Exception e) {e.printStackTrace();}
                     }
                 }
             }
@@ -268,9 +280,29 @@ public class MapsFragment extends Fragment implements LocationListener {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        try{        mLocationManager=(LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,this);}
+        try {
+            mLocationManager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                String [] permissions = { Manifest.permission.ACCESS_FINE_LOCATION,  Manifest.permission.ACCESS_COARSE_LOCATION };
+                requestPermissions(permissions , 1);
+            }
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);}
         catch (Exception e){e.printStackTrace();}
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID, "DemoCode", NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(channel);
+        }
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -300,10 +332,29 @@ public class MapsFragment extends Fragment implements LocationListener {
                     isSafe=false;
                 }
             }
-           if(isSafe==false){ Toast.makeText(this.getActivity(), "you are near to an unsafe shop!", Toast.LENGTH_SHORT).show();}
-           else Toast.makeText(this.getActivity(), "you are safe", Toast.LENGTH_SHORT).show();
+            if(isSafe==false){
+                sendNotification();
+                //Toast.makeText(this.getActivity(), "you are near to an unsafe shop!", Toast.LENGTH_SHORT).show();
+            }
+            else Toast.makeText(this.getActivity(), "you are safe", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+    public void checkSafe(){}
+    public void sendNotification() {
+        NotificationCompat.Builder builder
+                = new NotificationCompat.Builder(this.requireContext(),CHANNEL_ID)
+                .setSmallIcon(R.drawable.bhs_logo)
+                .setContentTitle("Unsafe Location Warning")
+                .setContentText("You are near to an unsafe shop!")
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE).setDefaults(NotificationCompat.DEFAULT_ALL);
+
+        NotificationManagerCompat notificationManagerCompat
+                = NotificationManagerCompat.from(this.requireContext());
+        notificationManagerCompat.notify(1,builder.build());
+    }
+
 }
