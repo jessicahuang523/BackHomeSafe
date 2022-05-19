@@ -153,7 +153,7 @@ public class MapsFragment extends Fragment implements LocationListener {
                 String[] data = new String[3];
                 data[0] = uid;
                 data[1] = ukey;
-                data[2] = "get_history";
+                data[2] = "get_shops";
 
                 PutData putData = new PutData("https://backhomesafe.herokuapp.com/acsm.php", "POST", field, data);
                 if (putData.startPut()) {
@@ -177,25 +177,17 @@ public class MapsFragment extends Fragment implements LocationListener {
 
                             for (int i = 0; i < history.length(); i++) {
                                 JSONObject index = history.getJSONObject(i);
-                                String id = index.getString("id");
                                 String shop_name = index.getString("company_name");
                                 String shop_lat = index.getString("lat");
                                 String shop_long = index.getString("lng");
                                 String str_check_in = index.getString("check_in");
                                 String str_check_out = index.getString("check_out");
                                 String health = index.getString("health");
-                                String contain = index.getString("contain");
 
                                 if (str_check_out.length() < 5) {
                                     str_check_out = "2000-01-01 00:00:00";
                                 }
 
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Date new_check_in = format.parse(str_check_in);
-                                Date new_check_out = format.parse(str_check_out);
-                                format = new SimpleDateFormat("MM/dd HH:mm");
-                                String check_in = format.format(new_check_in);
-                                String check_out = format.format(new_check_out);
 
                                 String[] shopData = {shop_name, health, shop_lat, shop_long};
                                 mShopData.add(shopData);
