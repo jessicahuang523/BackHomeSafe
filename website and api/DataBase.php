@@ -296,7 +296,62 @@ class DataBase
             return true;
         } else return false;
     }
+    //action : user getshops
+    function uat_getshops($uuid)
+    {
+        $uuid = $this->prepareData($uuid);
+        mysqli_query($this->connect, "SET CHARACTER SET 'utf8'"); //used to solve getting quesion mark for chinese
+        mysqli_query($this->connect, "SET SESSION collation_connection ='utf8_unicode_ci'"); //used to solve getting quesion mark for chinese
+        $this->sql = "SELECT 
+        data.id,
+        shop.company_name,
+        shop.lat,
+        shop.lng,
+        data.check_in,
+        data.check_out,
+        data.health,
+        bb.contain
+        FROM user_check_time as DATA 
+        RIGHT JOIN shop_data AS shop ON shop.id = DATA.shop_id
+        LEFT JOIN (SELECT shop_id,COUNT(id) contain FROM user_check_time WHERE check_out IS NULL GROUP BY shop_id) bb ON bb.shop_id = DATA.shop_id
+        WHERE shop.lat IS NOT NULL AND shop.lng IS NOT NULL ORDER BY data.id DESC;";
+        $result = mysqli_query($this->connect, $this->sql);
 
+        if (mysqli_num_rows($result) > 0) {
+            // looping through all results
+
+            $response["history"] = array();
+
+            while ($row = mysqli_fetch_array($result)) { //第一個loop的$row裝的是第一行的東西，第二個loop的row裝的是第二行的東西，如此類推
+                $apps = array();
+                if ($row["health"] == null) {
+                    $row["health"] = 0;
+                }
+                $apps["id"] = $row["id"];
+                $apps["company_name"] = $row["company_name"];
+                $apps["lat"] = $row["lat"];
+                $apps["lng"] = $row["lng"];
+                $apps["check_in"] = $row["check_in"];
+                $apps["check_out"] = $row["check_out"];
+                $apps["health"] = $row["health"];
+                $apps["contain"] = $row["contain"];
+                // push single product into final response array
+                array_push($response["history"], $apps); //拿完一行了，存進response，apps清零，搞下一行
+            }
+            // $this->sql = "SELECT shop_id,COUNT(id) FROM user_check_time WHERE check_out IS NULL GROUP BY shop_id"; //拿到還沒checkout的數目
+            // $result2 = mysqli_query($this->connect, $this->sql);
+            // while ($row = mysqli_fetch_array($result2)) {
+            //     foreach ($response["history"] as $app) {
+            //         if ($app["shop_id"] == $row["shop_id"]) {
+            //             $app["headCount"] = $row["COUNT(id)"];
+            //         }
+            //     }
+            // }
+            // success
+            // echoing JSON response
+            return json_encode($response);
+        } else return false;
+    }
     //action : user gethistory
     function uat_gethistory($uuid)
     {
@@ -312,7 +367,7 @@ class DataBase
         data.check_out,
         data.health,
         bb.contain
-        FROM user_check_time as DATA 
+        FROM user_check_time AS data 
         LEFT JOIN shop_data AS shop ON shop.id = DATA.shop_id
         LEFT JOIN (SELECT shop_id,COUNT(id) contain FROM user_check_time WHERE check_out IS NULL GROUP BY shop_id) bb ON bb.shop_id = DATA.shop_id
         WHERE data.uuid = " . $uuid . " ORDER BY data.id DESC;";

@@ -25,6 +25,12 @@ if (isset($_POST['uuid']) && isset($_POST['pass_key']) && isset($_POST['at_type'
 						print_r($db->uat_gethistory($_POST['uuid']));
 					} else echo "Action Failed";
 				} else echo "Missing Data";
+			} else if ($_POST['at_type'] == "get_shops") {
+				if (isset($_POST['uuid'])) {
+					if ($db->uat_getshops($_POST['uuid'])) {
+						print_r($db->uat_getshops($_POST['uuid']));
+					} else echo "Action Failed";
+				} else echo "Missing Data";
 			} else if ($_POST['at_type'] == "get_announce") {
 				// code...
 				if (isset($_POST['uuid'])) {
